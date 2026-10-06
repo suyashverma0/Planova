@@ -1,0 +1,39 @@
+version: '3.8'
+
+# Planova Docker Compose Infrastructure Config
+# Status: Phase 0 Specification. Full containerization deployed in Phase 10.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: planova_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-planova}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-planova_dev_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-planova_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U planova -d planova_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: planova_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:

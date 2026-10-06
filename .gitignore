@@ -1,0 +1,63 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+
+# Environment & Secret Files
+.env
+.env.local
+.env.production
+.env.staging
+*.pem
+*.key
+
+# Python & Backend
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+.uv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# Node.js & Frontend
+node_modules/
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-store/
+dist/
+build/
+.vite/
+
+# Database & Cache
+*.sqlite3
+*.db
+redis_data/
+postgres_data/
+
+# Machine Learning & Tracking
+.dvc/cache/
+.dvc/tmp/
+mlruns/
+*.onnx
+*.pkl
+*.joblib
+*.h5
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs & Monitoring
+*.log
+logs/

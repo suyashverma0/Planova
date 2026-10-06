@@ -1,0 +1,45 @@
+# DVC Pipeline Specification for Planova Goal Completion Prediction
+# Status: Phase 0 Skeleton. Implementation runs in Phase 8.
+
+stages:
+  generate_data:
+    cmd: python data_generation/generate_synthetic_data.py --samples 5000 --output data/synthetic_goals.csv
+    deps:
+      - data_generation/generate_synthetic_data.py
+    outs:
+      - data/synthetic_goals.csv
+
+  featurize_and_split:
+    cmd: python src/features.py --input data/synthetic_goals.csv --output-dir data/processed/
+    deps:
+      - data/synthetic_goals.csv
+      - src/features.py
+    outs:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - data/processed/test.csv
+
+  train_and_tune:
+    cmd: python src/train.py --train-data data/processed/train.csv --val-data data/processed/val.csv
+    deps:
+      - data/processed/train.csv
+      - data/processed/val.csv
+      - src/train.py
+      - src/preprocessing.py
+    outs:
+      - models/model_artifact.pkl
+
+  evaluate:
+    cmd: python src/evaluate.py --model models/model_artifact.pkl --test-data data/processed/test.csv
+    deps:
+      - models/model_artifact.pkl
+      - data/processed/test.csv
+      - src/evaluate.py
+    metrics:
+      - metrics.json:
+          cache: false
+    plots:
+      - pr_curve.json:
+          cache: false
+      - roc_curve.json:
+          cache: false
